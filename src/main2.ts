@@ -22,4 +22,4 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
-console.log('This is main.ts')
+console.log('This is main2.ts');

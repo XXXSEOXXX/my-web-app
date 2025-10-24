@@ -1,25 +1,21 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import * as PIXI from 'pixi.js';
+import viteLogo from '/vite.svg';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+// Create the application helper and add its render target to the page
+let app = new PIXI.Application<HTMLCanvasElement>({ background: '#1099bb', resizeTo: window });
+document.body.appendChild(app.view);
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
-console.log('This is main2.ts');
+await PIXI.Assets.load({ alias: 'vite', src: viteLogo });
+const texture = PIXI.Assets.get('vite');
+
+// Create the sprite and add it to the stage
+let sprite = PIXI.Sprite.from(texture);
+app.stage.addChild(sprite);
+
+// Add a ticker callback to move the sprite back and forth
+let elapsed = 0.0;
+app.ticker.add((delta) => {
+  elapsed += delta;
+  sprite.x = 100.0 + Math.cos(elapsed / 50.0) * 100.0;
+});
